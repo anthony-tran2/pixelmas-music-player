@@ -22,6 +22,11 @@ class MainWorldMap {
     const {x,y} = utils.nextPosition(currentX, currentY, direction);
     return this.walls[`${x},${y}`] || false;
     }
+
+  isSpaceButton(currentX, currentY, direction) {
+    const { x, y } = utils.nextPosition(currentX, currentY, direction);
+    return this.buttons[`${x},${y}`] || false;
+  }
 }
 
 
@@ -59,6 +64,12 @@ window.MainWorldMaps = {
         x: utils.withGrid(0),
         y: utils.withGrid(3),
       })
+    },
+    buttons: {
+      [utils.asGridCoords(4, 3)]: "back",
+      [utils.asGridCoords(4, 4)]: "play/pause",
+      [utils.asGridCoords(4, 5)]: "play/pause",
+      [utils.asGridCoords(4, 6)]: "forward",
     },
     walls: {
       [utils.asGridCoords(0, 0)]: true,

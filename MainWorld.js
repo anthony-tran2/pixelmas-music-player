@@ -37,6 +37,10 @@ class MainWorld {
     this.directionInput.init();
     this.directionInput.direction;
 
+    this.interactionInput = new InteractionInput();
+    this.interactionInput.init();
+    this.interactionInput.interaction;
+
     this.startGameLoop();
 
 
