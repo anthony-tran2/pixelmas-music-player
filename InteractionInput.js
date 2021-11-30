@@ -16,6 +16,7 @@ class InteractionInput {
       const interaction = this.map[e.code];
       if (interaction && !this.heldInteraction) {
         this.heldInteraction = interaction;
+        console.log(this.heldInteraction);
       }
     });
 
@@ -23,6 +24,7 @@ class InteractionInput {
       const interaction = this.map[e.code];
       if (this.heldInteraction && interaction) {
         this.heldInteraction = null;
+        console.log(this.heldInteraction);
       }
     });
   }
