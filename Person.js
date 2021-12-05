@@ -12,6 +12,8 @@ class Person extends GameObject {
 
     this.heldInteraction = null;
 
+    this.pauseOrPlay = 'play';
+
     this.directionUpdate = {
       "up": ["y", -1],
       "down": ["y", 1],
@@ -25,25 +27,10 @@ class Person extends GameObject {
     if (this.movingProgressRemaining > 0) {
       this.updatePosition();
     } else if (this.heldInteraction) {
-      const button = state.map.isSpaceButton(this.x, this.y, this.lastDirection);
-      if (button === "back" && this.heldInteraction === "main") {
-        console.log('skip back');
-      } else if (button === "back" && this.heldInteraction === "second") {
-        console.log('rewind');
-      } else if (button === "forward" && this.heldInteraction === "main") {
-        console.log('skip forward');
-      } else if (button === "forward" && this.heldInteraction === "second") {
-        console.log('fast forward');
-      } else if (button === "play/pause") {
-        if (this.pauseOrPlay === 'play') {
-          console.log('pause');
-          this.pauseOrPlay = 'pause';
-        } else if (this.pauseOrPlay === 'pause') {
-          console.log('play');
-          this.pauseOrPlay = 'play';
-        }
+      if (!this.beingHeld) {
+        this.buttonInteraction(state.map.isSpaceButton(this.x, this.y, this.lastDirection), state);
       }
-    } else {
+      } else {
       if (this.isPlayerControlled && state.arrow) {
         this.startBehavior(state, {
           type: "walk",
@@ -52,8 +39,8 @@ class Person extends GameObject {
       }
       this.updaetSprite(state);
     }
-
   }
+
 
   startBehavior(state, behavior) {
     this.direction = behavior.direction;
@@ -81,6 +68,29 @@ class Person extends GameObject {
     this.sprite.setAnimation(`idle-${this.direction}`);
   }
 
+  buttonInteraction(button, state) {
+  if (button === "back" && this.heldInteraction === "main") {
+    console.log('skip back');
+  } else if (button === "back" && this.heldInteraction === "second") {
+    console.log('rewind');
+  } else if (button === "forward" && this.heldInteraction === "main") {
+    console.log('skip forward');
+  } else if (button === "forward" && this.heldInteraction === "second") {
+    console.log('fast forward');
+  } else if (button === "play/pause") {
+    if (this.pauseOrPlay === 'play') {
+      console.log('pause');
+      this.pauseOrPlay = 'pause';
+      state.map.gameObjects.pause.sprite.currentAnimation = "idle-right";
+    } else if (this.pauseOrPlay === 'pause') {
+      console.log('play');
+      this.pauseOrPlay = 'play';
+      state.map.gameObjects.pause.sprite.currentAnimation = "idle-down";
+    }
+  }
+    this.beingHeld = true;
+  }
+
   buttonsInit() {
     document.addEventListener("keydown", e => {
       const interaction = this.map[e.code];
@@ -93,6 +103,7 @@ class Person extends GameObject {
       const interaction = this.map[e.code];
       if (this.heldInteraction && interaction) {
         this.heldInteraction = null;
+        this.beingHeld = false;
       }
   });
 }
