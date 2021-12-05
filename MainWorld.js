@@ -39,8 +39,9 @@ class MainWorld {
 
     this.map.gameObjects.snowman.buttonsInit();
 
-    this.startGameLoop();
+    this.map.gameObjects.pause.sprite.currentAnimation = "idle-right";
 
+    this.startGameLoop();
 
   }
 }

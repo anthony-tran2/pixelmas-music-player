@@ -12,7 +12,7 @@ class Person extends GameObject {
 
     this.heldInteraction = null;
 
-    this.pauseOrPlay = 'play';
+    this.pauseOrPlay = 'pause';
 
     this.directionUpdate = {
       "up": ["y", -1],
@@ -20,6 +20,8 @@ class Person extends GameObject {
       "left": ["x", -1],
       "right": ["x", 1]
     }
+
+    this.songs = ['Carol Of The Bells - Pentatonix', 'Frosty The Snowman - Pentatonix', 'I Just Called To Say I Love You - Pentatonix', 'I Saw Three Ships - Pentatonix', "I'll Be Home For Christmas - Michael Bublé", "It's Beginning To Look A Lot Like Christmas - Michael Bublé", 'We Wish You A Merry Christmas - Pentatonix', 'White Christmas - Michael Bublé', 'Winter Wonderland - Michael Bublé', 'Wonderful Christmas Pentatonix'];
   }
 
   update(state) {
@@ -69,26 +71,39 @@ class Person extends GameObject {
   }
 
   buttonInteraction(button, state) {
+  const song = document.querySelector('audio');
   if (button === "back" && this.heldInteraction === "main") {
-    console.log('skip back');
+    this.songs.unshift(this.songs.splice(this.songs.length - 1, 1)[0]);
+    song.src = `./songs/${this.songs[0]}.mp3`;
+    if (this.pauseOrPlay === 'pause') {
+      this.pauseOrPlay = 'play';
+      state.map.gameObjects.pause.sprite.currentAnimation = "idle-down";
+    }
+    song.play();
   } else if (button === "back" && this.heldInteraction === "second") {
     console.log('rewind');
   } else if (button === "forward" && this.heldInteraction === "main") {
-    console.log('skip forward');
+    this.songs.push(this.songs.splice(0, 1)[0]);
+    song.src = `./songs/${this.songs[0]}.mp3`;
+    if (this.pauseOrPlay === 'pause') {
+      this.pauseOrPlay = 'play';
+      state.map.gameObjects.pause.sprite.currentAnimation = "idle-down";
+    }
+    song.play();
   } else if (button === "forward" && this.heldInteraction === "second") {
     console.log('fast forward');
   } else if (button === "play/pause") {
     if (this.pauseOrPlay === 'play') {
-      console.log('pause');
+      song.pause();
       this.pauseOrPlay = 'pause';
       state.map.gameObjects.pause.sprite.currentAnimation = "idle-right";
     } else if (this.pauseOrPlay === 'pause') {
-      console.log('play');
+      song.play();
       this.pauseOrPlay = 'play';
       state.map.gameObjects.pause.sprite.currentAnimation = "idle-down";
     }
   }
-    this.beingHeld = true;
+  this.beingHeld = true;
   }
 
   buttonsInit() {
