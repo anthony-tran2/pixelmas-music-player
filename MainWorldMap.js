@@ -2,6 +2,7 @@ class MainWorldMap {
   constructor(config) {
     this.gameObjects = config.gameObjects;
     this.walls = config.walls || {};
+    this.buttons = config.buttons || {};
 
     this.lowerImage = new Image();
     this.lowerImage.src = config.lowerSrc;
@@ -66,10 +67,10 @@ window.MainWorldMaps = {
       })
     },
     buttons: {
-      [utils.asGridCoords(4, 3)]: "back",
+      [utils.asGridCoords(3, 4)]: "back",
       [utils.asGridCoords(4, 4)]: "play/pause",
-      [utils.asGridCoords(4, 5)]: "play/pause",
-      [utils.asGridCoords(4, 6)]: "forward",
+      [utils.asGridCoords(5, 4)]: "play/pause",
+      [utils.asGridCoords(6, 4)]: "forward",
     },
     walls: {
       [utils.asGridCoords(0, 0)]: true,

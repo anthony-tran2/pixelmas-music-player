@@ -16,8 +16,7 @@ class MainWorld {
       Object.values(this.map.gameObjects).forEach(object => {
         object.update({
           arrow: this.directionInput.direction,
-          map: this.map,
-          interaction: this.interactionInput.interaction
+          map: this.map
         });
         object.sprite.draw(this.ctx);
       });
@@ -38,9 +37,7 @@ class MainWorld {
     this.directionInput.init();
     this.directionInput.direction;
 
-    this.interactionInput = new InteractionInput();
-    this.interactionInput.init();
-    this.interactionInput.interaction;
+    this.map.gameObjects.snowman.buttonsInit();
 
     this.startGameLoop();
 
